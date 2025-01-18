@@ -1,19 +1,24 @@
-#include <bits/stdc++.h>
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        map<int , int> mpp ;
-        for(int i=0 ; i<nums.size() ; i++)
+        int count=0;
+        int element;
+        for(int i=0 ; i<nums.size() ;i++)
         {
-            mpp[nums[i]]++;//counting number of times each number appears
-        }
-        for(auto it : mpp)//iterating through map
-        {
-            if(it.second > (nums.size()/2))// checking if count greater than n/2
+            if(count==0)
             {
-                return it.first;
+                count=1;
+                element=nums[i];
+            }
+            else if(nums[i] == element)
+            {
+                count++;
+            }
+            else
+            {
+                count--;
             }
         }
-        return -1;
+        return element;
     }
 };
