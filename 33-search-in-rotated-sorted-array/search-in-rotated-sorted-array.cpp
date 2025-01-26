@@ -10,7 +10,6 @@ public:
                 index= i;
             }
         }   
-        
         return index;     
     }
 };
