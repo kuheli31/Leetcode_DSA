@@ -4,7 +4,7 @@ public:
     {
         if (n % 2 == 1) 
         {
-            return newVec[n / 2] ; // Middle index for odd length
+            return newVec[n / 2] ;
         } else 
         {
             return (newVec[n / 2 - 1] + newVec[n / 2]) / 2.0;
