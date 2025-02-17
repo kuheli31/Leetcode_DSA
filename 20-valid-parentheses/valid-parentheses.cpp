@@ -5,7 +5,7 @@ public:
         int n = s.length();
         stack<char> st;
 
-        for (i = 0; i < n ; i++) {
+        for (i = 0; i < n; i++) {
             if (s[i] == '[' || s[i] == '(' || s[i] == '{') {
                 st.push(s[i]);
             } else {
@@ -16,9 +16,8 @@ public:
                     if ((top == '[' && s[i] == ']') ||
                         (top == '(' && s[i] == ')') ||
                         (top == '{' && s[i] == '}')) {
-                            st.pop();
-                    }
-                    else{
+                        st.pop();
+                    } else {
                         return false;
                     }
                 }
