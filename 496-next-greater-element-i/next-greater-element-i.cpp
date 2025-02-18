@@ -7,7 +7,7 @@ public:
         // Iterate over nums2 from right to left (reverse order)
         for (int i = nums2.size() - 1; i >= 0; i--) {
             // Pop elements from the stack that are smaller than or equal to nums2[i]
-            while (!st.empty() && st.top() <= nums2[i]) {
+            while (!st.empty() && st.top() < nums2[i]) {
                 st.pop();  // Remove smaller elements, they cannot be the NGE
             }
 
