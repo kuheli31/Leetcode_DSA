@@ -27,7 +27,7 @@ public:
         stack<int> st;
 
         for (int i = 0; i < n; i++) {
-            while (!st.empty() && arr[st.top()] > arr[i]) { // Use '>' for correct bounds
+            while (!st.empty() && arr[st.top()] > arr[i]) { 
                 st.pop();
             }
             if (!st.empty()) {
@@ -51,6 +51,6 @@ public:
             total = (total + (left * right % MOD * arr[i]) % MOD) % MOD;
         }
 
-        return static_cast<int>(total);
+        return static_cast<int>(total);//For no overflow we used static_cast<int>
     }
 };
