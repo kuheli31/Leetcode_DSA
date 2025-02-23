@@ -1,6 +1,7 @@
 class Solution {
 public:
-    long long sumMax(vector<int>& nums) {
+    long long sumMax(vector<int>& nums) 
+    {
         int n = nums.size();
         stack<int> st;
         vector<int> left(n), right(n);
