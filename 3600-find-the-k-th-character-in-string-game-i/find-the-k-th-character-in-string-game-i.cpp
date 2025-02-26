@@ -8,7 +8,7 @@ public:
             len = len*2;
         }
         int half = len / 2;
-        if (k <= half) 
+        if(k <= half) 
         {
             return kthCharacter(k);
         } 
