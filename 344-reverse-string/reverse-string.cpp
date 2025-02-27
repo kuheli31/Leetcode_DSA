@@ -1,20 +1,13 @@
 class Solution {
 public:
-    void reverseString(vector<char>& s) {
-        int i, j;
-        char t;
-        int n = s.size(); // Get the size of the vector
-        
-        i = 0; 
-        j = n - 1; // Set j to last index
+    void helper(vector<char>& s, int i, int j) {
+        if (i >= j) return; // Base case: stop when indices cross
 
-        while (i < j)  // Swap characters until the middle is reached
-        {
-            t = s[i];
-            s[i] = s[j];
-            s[j] = t;
-            i++;
-            j--;
-        }
+        swap(s[i], s[j]); // Swap characters
+
+        helper(s, i + 1, j - 1); // Recursive call moving inward
+    }
+    void reverseString(vector<char>& s) {
+        helper(s, 0, s.size() - 1);
     }
 };
