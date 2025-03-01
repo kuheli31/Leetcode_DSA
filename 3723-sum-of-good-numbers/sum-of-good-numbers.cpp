@@ -10,6 +10,7 @@ public:
         if (p2 >= 0 && p2 < n) {  
             return min(p1, p2);  // Both are valid, return the smaller one
         }
+        
         return p1;  // Only p1 is valid
     } 
     return p2;  // If p1 is invalid, return p2
