@@ -1,31 +1,23 @@
 class Solution {
 public:
+    void generateStrings(int n , string curr , vector<string>&result)
+    {
+        if(curr.size() == n) 
+        {
+            result.push_back(curr);
+            return;
+        }
+        generateStrings(n,curr + '1',result);
+        //Add 0 only if the last char is not 0
+        if(curr.empty() || curr.back()!='0')
+        {
+            generateStrings(n,curr + '0',result);
+        }
+    }
     vector<string> validStrings(int n) 
     {
         vector<string> result;
-
-        result.push_back("0");
-        result.push_back("1");
-
-        if(n == 1) return result;
-
-        for(int i=2;i<=n;i++)
-        {
-            vector<string> temp;
-            for(string str : result)
-            {
-                if(str.back() == '1')
-                {
-                    temp.push_back(str + '0');
-                    temp.push_back(str + '1');
-                }
-                else
-                {
-                    temp.push_back(str + '1');
-                }
-            }
-            result=temp;
-        }
+        generateStrings(n, "", result);
         return result;
     }
 };
