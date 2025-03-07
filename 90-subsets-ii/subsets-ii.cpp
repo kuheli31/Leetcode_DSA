@@ -1,31 +1,35 @@
 class Solution {
 public:
-    void backtrack(vector<int>& nums, int start, vector<int>& subset, vector<vector<int>>& result) {
-        result.push_back(subset); // Add current subset to result
-        
-        for (int i = start; i < nums.size(); i++) {
-            // Skip duplicates at the same level
-            if (i > start && nums[i] == nums[i - 1]) continue;
+    void backtrack(int index, vector<int>& nums, vector<int>& temp, vector<vector<int>>& result) {
+        // Add the current subset to the result
+        result.push_back(temp);
 
-            // Include current element
-            subset.push_back(nums[i]);
-            backtrack(nums, i + 1, subset, result);
-            
-            // Exclude current element (Backtrack)
-            subset.pop_back();
+        // Explore further elements
+        for (int i = index; i < nums.size(); i++) {
+            // Skip duplicate elements
+            if (i > index && nums[i] == nums[i - 1]) continue;
+
+            // Pick the element
+            temp.push_back(nums[i]);
+
+            // Recur for the next index
+            backtrack(i + 1, nums, temp, result);
+
+            // Backtrack - remove the last added element
+            temp.pop_back();
         }
     }
-    
+
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         vector<vector<int>> result;
-        vector<int> subset;
+        vector<int> temp;
         
-        // Sort to handle duplicates
+        // Step 1: Sort the array to handle duplicates
         sort(nums.begin(), nums.end());
-        
-        // Start backtracking
-        backtrack(nums, 0, subset, result);
-        
+
+        // Step 2: Start backtracking from index 0
+        backtrack(0, nums, temp, result);
+
         return result;
-    }
+     }
 };
