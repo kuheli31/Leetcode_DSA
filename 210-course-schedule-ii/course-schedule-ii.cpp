@@ -1,45 +1,56 @@
 class Solution {
 public:
-    bool dfs(int u, vector<int> &visited, unordered_map<int, vector<int>> &adj, stack<int> &st) {
-        visited[u] = 1;  // mark as visiting
-
-        for (int &v : adj[u]) {
-            if (visited[v] == 1) return false; // cycle detected
-            if (visited[v] == 0) {
-                if (!dfs(v, visited, adj, st)) return false;
+    void bfs(unordered_map<int , vector<int>>&adj , int numCourses , vector<int>&res , vector<int> &indegree)
+    {
+        //fill the queue
+        queue<int> q;
+        for(int i=0 ; i<numCourses ; i++)
+        {
+            if(indegree[i] == 0)
+            {
+                res.push_back(i);
+                q.push(i);
             }
         }
 
-        visited[u] = 2;  // mark as visited
-        st.push(u);
-        return true;
-    }
+        while(!q.empty())
+        {
+            int u = q.front();
+            q.pop();
 
-    vector<int> findOrder(int numCourses, vector<vector<int>> &prerequisites) {
-        unordered_map<int, vector<int>> adj;
-        for (auto &e : prerequisites) {
-            int u = e[0];
-            int v = e[1];
-            adj[v].push_back(u); // course `v` is a prerequisite of `u`
-        }
-
-        vector<int> visited(numCourses, 0); // 0=unvisited, 1=visiting, 2=visited
-        stack<int> st;
-
-        for (int i = 0; i < numCourses; i++) {
-            if (visited[i] == 0) {
-                if (!dfs(i, visited, adj, st)) {
-                    return {}; // cycle found
+            for(auto &v : adj[u])
+            {
+                indegree[v]--;
+                if(indegree[v] == 0)
+                {
+                    res.push_back(v);
+                    q.push(v);
                 }
             }
         }
+    }
 
-        vector<int> res;
-        while (!st.empty()) {
-            res.push_back(st.top());
-            st.pop();
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) 
+    {
+        unordered_map<int , vector<int>> adj;
+        vector<int> indegree(numCourses, 0);
+        for(auto &e : prerequisites)
+        {
+            int u = e[0];
+            int v = e[1];
+            adj[v].push_back(u);
+            indegree[u]++;
         }
 
-        return res;
+        vector<int> res;
+        bfs(adj , numCourses , res , indegree);
+        if(res.size() == numCourses)
+        {
+            return res;
+        }
+        else
+        {
+            return {};
+        }
     }
 };
