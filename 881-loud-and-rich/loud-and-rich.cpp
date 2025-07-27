@@ -1,52 +1,69 @@
 class Solution {
 public:
-    // Helper function to get quiet value
-    int getQuietIndexValue(vector<int>& quiet, int& index) {
-        return quiet[index];
+    int getQuietIndexValue(vector<int>& quiet , int &index)
+    {
+        return quiet[index];  // simplified, same behavior
     }
 
-    // DFS function to collect all richer people recursively
-    void dfs(int node, unordered_map<int, vector<int>>& adj, vector<bool>& visited, vector<int>& collected) {
+    // DFS to collect all richer-or-equal people
+    void dfs(int node, unordered_map<int , vector<int>>& adj, vector<bool>& visited, vector<int>& level)
+    {
         visited[node] = true;
-        collected.push_back(node);
-        for (auto neighbor : adj[node]) {
-            if (!visited[neighbor]) {
-                dfs(neighbor, adj, visited, collected);
+        level.push_back(node);
+
+        for(auto neighbor : adj[node])
+        {
+            if(!visited[neighbor])
+            {
+                dfs(neighbor, adj, visited, level);
             }
         }
     }
 
-    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
+    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) 
+    {
         int n = quiet.size();
-        unordered_map<int, vector<int>> adj;
+        unordered_map<int , vector<int>> adj(n);
 
-        // Build graph: poorer → richer
-        for (auto& e : richer) {
+        // building graph: poorer → richer
+        for(auto &e : richer)
+        {
             int u = e[0];
             int v = e[1];
-            adj[v].push_back(u);
+            adj[v].push_back(u);  // direction fixed
         }
 
-        // Also include the node itself in adj list implicitly during DFS
-        vector<int> ans(n);
+        // pushing the node itself in the adj list (optional here)
+        for(int i = 0 ; i < n ; i++)
+        {
+            adj[i].push_back(i);
+        }
 
-        for (int i = 0; i < n; i++) {
+        vector<int> ans;
+
+        for(int i = 0 ; i < n ; i++)
+        {
+            vector<int> level;
             vector<bool> visited(n, false);
-            vector<int> richerOrEqual;
-            dfs(i, adj, visited, richerOrEqual);
 
-            int minQuiet = INT_MAX;
-            int quietestPerson = i;
+            // do DFS to collect all richer-or-equal people
+            dfs(i, adj, visited, level);
 
-            for (int person : richerOrEqual) {
-                int val = getQuietIndexValue(quiet, person);
-                if (val < minQuiet) {
-                    minQuiet = val;
-                    quietestPerson = person;
+            // find minimum quiet value
+            int minVal = INT_MAX;
+            int minPerson = i;
+
+            for(int person : level)
+            {
+                int wt = getQuietIndexValue(quiet , person);
+                if(wt < minVal)
+                {
+                    minVal = wt;
+                    minPerson = person;
                 }
             }
 
-            ans[i] = quietestPerson;
+            ans.push_back(minPerson);
         }
 
         return ans;
