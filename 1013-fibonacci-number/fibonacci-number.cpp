@@ -1,15 +1,15 @@
 class Solution {
 public:
-    int fib(int n) {
-        int prev1 = 0;
-        int prev2 = 1;
-        int curr = 0;
-        for(int i=0 ; i<n ; i++)
+    int fib(int n) 
+    {
+        vector<int> dp = vector<int>(31, -1);
+        dp[0] = 0;
+        dp[1] = 1;
+
+        for(int i=2 ; i<=n ; i++)
         {
-            curr = prev1 + prev2;
-            prev2 = prev1;
-            prev1 = curr;
+            dp[i] = dp[i-1] + dp[i-2];
         }
-        return curr;
+        return dp[n];
     }
 };
