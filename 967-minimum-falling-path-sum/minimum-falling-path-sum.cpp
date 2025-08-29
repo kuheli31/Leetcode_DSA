@@ -4,31 +4,27 @@ public:
         int n = matrix.size();
         int m = matrix[0].size();
 
-        // dp table: same size as matrix
-        vector<vector<int>> dp(n, vector<int>(m, 0));
+        // Only keep one row for previous
+        vector<int> prev(m, 0), curr(m, 0);
 
-        // Base case: first row is same as matrix
+        // Base case: first row
         for (int j = 0; j < m; j++) {
-            dp[0][j] = matrix[0][j];
+            prev[j] = matrix[0][j];
         }
 
-        // Fill dp row by row
+        // Fill row by row
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                int up = dp[i-1][j];
-                int upLeft = (j > 0) ? dp[i-1][j-1] : INT_MAX;
-                int upRight = (j < m-1) ? dp[i-1][j+1] : INT_MAX;
+                int up = prev[j];
+                int upLeft = (j > 0) ? prev[j-1] : INT_MAX;
+                int upRight = (j < m-1) ? prev[j+1] : INT_MAX;
 
-                dp[i][j] = matrix[i][j] + min({up, upLeft, upRight});
+                curr[j] = matrix[i][j] + min({up, upLeft, upRight});
             }
+            prev = curr;  // move current row to previous
         }
 
-        // Answer = minimum in last row
-        int ans = INT_MAX;
-        for (int j = 0; j < m; j++) {
-            ans = min(ans, dp[n-1][j]);
-        }
-
-        return ans;
+        // Answer = minimum in the last row
+        return *min_element(prev.begin(), prev.end());
     }
 };
