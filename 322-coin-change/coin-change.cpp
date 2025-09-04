@@ -6,7 +6,6 @@ public:
         const int INF = 1e9;
         vector<int> prev(amount+1 , 0);
         vector<int> curr(amount+1 , 0);
-
         // Base case: using only coin[0]
         for (int t = 0; t <= amount; t++) {
             if (t % coins[0] == 0) prev[t] = t / coins[0];
@@ -19,15 +18,23 @@ public:
                 int notTake = prev[t];
                 int take = INF;
                 if (coins[ind] <= t) {
-                    take = 1 + curr[t - coins[ind]];  // unbounded knapsack
+                    take = 1 + curr[t - coins[ind]];
                 }
                 curr[t] = min(take, notTake);
             }
-            prev = curr;  
-            fill(curr.begin(), curr.end(), 0); // ✅ reset curr before next use
+            prev = curr;
+            fill(curr.begin(), curr.end(), 0);
         }
 
         int ans = prev[amount];
-        return (ans >= INF) ? -1 : ans;
+
+        if(ans >= INF)
+        {
+            return -1;
+        }
+        else
+        {
+            return ans;
+        }
     }
 };
