@@ -4,19 +4,26 @@ public:
     {
         int n = coins.size();
         const int INF = 1e9;
-        vector<int> dp(amount + 1, INF);
+        vector<int> prev(amount+1 , INF);
 
-        // Base case
-        dp[0] = 0;
+        // Base case: using only coin[0]
+        for (int t = 0; t <= amount; t++) {
+            if (t % coins[0] == 0) prev[t] = t / coins[0];
+        }
 
-        // For each coin, update dp[]
-        for (int ind = 0; ind < n; ind++) {
-            for (int t = coins[ind]; t <= amount; t++) {
-                dp[t] = min(dp[t], 1 + dp[t - coins[ind]]);
+        // Build DP table
+        for (int ind = 1; ind < n; ind++) {
+            for (int t = 0; t <= amount; t++) {
+                int notTake = prev[t];
+                int take = INF;
+                if (coins[ind] <= t) {
+                    take = 1 + prev[t - coins[ind]];
+                }
+                prev[t] = min(take, notTake);
             }
         }
 
-        int ans = dp[amount];
+        int ans = prev[amount];
         return (ans >= INF) ? -1 : ans;
     }
 };
