@@ -4,34 +4,30 @@ public:
     {
         int n = coins.size();
         const int INF = 1e9;
-        vector<vector<int>> dp(n, vector<int>(amount + 1, INF));
+        vector<int> prev(amount+1 , 0);
+        vector<int> curr(amount+1 , 0);
 
         // Base case: using only coin[0]
         for (int t = 0; t <= amount; t++) {
-            if (t % coins[0] == 0) dp[0][t] = t / coins[0];
+            if (t % coins[0] == 0) prev[t] = t / coins[0];
+            else prev[t] = INF;
         }
 
         // Build DP table
         for (int ind = 1; ind < n; ind++) {
             for (int t = 0; t <= amount; t++) {
-                int notTake = dp[ind-1][t];
+                int notTake = prev[t];
                 int take = INF;
                 if (coins[ind] <= t) {
-                    take = 1 + dp[ind][t - coins[ind]];
+                    take = 1 + curr[t - coins[ind]];  // unbounded knapsack
                 }
-                dp[ind][t] = min(take, notTake);
+                curr[t] = min(take, notTake);
             }
+            prev = curr;  
+            fill(curr.begin(), curr.end(), 0); // ✅ reset curr before next use
         }
 
-        int ans = dp[n-1][amount];
-
-        if(ans >= INF)
-        {
-            return -1;
-        }
-        else
-        {
-            return ans;
-        }
+        int ans = prev[amount];
+        return (ans >= INF) ? -1 : ans;
     }
 };
