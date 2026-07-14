@@ -11,7 +11,7 @@
 <pre><strong>Input:</strong> nums = [1]
 <strong>Output:</strong> [[1]]
 </pre>
-<p>&nbsp;</p>
+<p>&nbsp; </p>
 <p><strong>Constraints:</strong></p>
 
 <ul>
